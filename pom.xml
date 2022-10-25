@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.0.0-M4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>dev.datainmotion</groupId>
+	<artifactId>gtfsrealtime</artifactId>
+	<version>1.0.0</version>
+	<name>gtfsrealtime</name>
+	<description>spring-pulsar-gtfsrealtime:   GTFS-RealTime feeds
+	</description>
+	<properties>
+		<java.version>17</java.version>
+		<pulsar.version>2.10.1</pulsar.version>
+		<spring-pulsar.version>0.1.0-M1</spring-pulsar.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.pulsar</groupId>
+			<artifactId>spring-pulsar-spring-boot-starter</artifactId>
+			<version>0.1.0-M1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+<dependency>
+  <groupId>org.mobilitydata</groupId>
+  <artifactId>gtfs-realtime-bindings</artifactId>
+  <version>0.0.8</version>
+</dependency>
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-gtfs-realtime-api</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+    <repository>
+        <id>spring-snapshots</id>
+        <name>Spring Snapshots</name>
+        <url>https://repo.spring.io/snapshot</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+    </repository>
+		<repository>
+			<id>public.onebusaway.org</id>
+			<url>http://nexus.onebusaway.org/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
