@@ -39,7 +39,6 @@ public class GTFSRealTimeService {
 	/**
 	 * get MTA Alerts
 	 *
-	 * https://developers.google.com/transit/gtfs-realtime/examples/java-sample
 	 */
 	public List<Alert> getMTAAlerts() {
 		ExtensionRegistry registry = ExtensionRegistry.newInstance();
@@ -192,7 +191,6 @@ public class GTFSRealTimeService {
 		URL url = null;
 		try {
 			url = new URL(gtfsRealTimeProperties.getVehiclepositionsUrl() + gtfsRealTimeProperties.getKey());
-			// "http://gtfsrt.prod.obanyc.com/vehiclePositions?key=eb3b69d1-c869-4429-bee6-26a6cfc89cbe");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			log.error("Failed to retrieve vehicles gtfsrealtimedue to: " + e.getMessage(), e);
@@ -209,16 +207,6 @@ public class GTFSRealTimeService {
 			return Collections.emptyList();
 		}
 
-		/**
-		 Vehicle:MTABC_2248,,
-		 RID: BM4
-		 DID: 1
-		 STD20221028
-		 trid: 34572669-SCPD2-SC_D2-Weekday-04-SDon
-		 Feed Entity ID:MTABC_2230
-		 Vehicle:id: "MTABC_2230"
-		 *
-		 */
 		if ( feed != null && feed.getSerializedSize() > 0 ) {
 
 			for (FeedEntity entity : feed.getEntityList()) {
@@ -274,20 +262,12 @@ public class GTFSRealTimeService {
 	}
 
 	/**
-	 * https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/trip-updates.md
-	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-stoptimeupdate
-	 https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#tripstxt
-	 https://github.com/OneBusAway/onebusaway/wiki
-	 https://developers.google.com/transit/gtfs-realtime/guides/trip-updates
-	 https://github.com/ktc312/NewYork_gtfs_realtime/
+	 *
 	 */
 	public void getMTATripUpdates() {
 		URL url = null;
 		try {
-			// url = new URL("http://gtfsrt.prod.obanyc.com/tripUpdates?key=b1f9a401-c839-417c-8995-d3a4a505b7ad");
-
 			url = new URL ( gtfsRealTimeProperties.getTripupdatesUrl() +  gtfsRealTimeProperties.getKey() );
-
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -370,50 +350,8 @@ public class GTFSRealTimeService {
 	}
 
 	/**
-	 * https://github.com/OneBusAway/onebusaway-gtfs-realtime-api
-	 * http://developer.onebusaway.org/modules/onebusaway-gtfs-realtime-api/current/
-	 https://gtfs.org/resources/
-	 https://github.com/cmoscardi/bus_kalman/blob/master/kalman.ipynb
-	 https://github.com/laidig/gtfs-rt-printer/blob/master/src/main/java/net/transitdata/gtfsrt/Main.java
-	 https://www.transit.land/feeds/
-	 https://www.transit.land/routes/r-dr4u-607#sources
-	 https://github.com/MobilityData/mobility-database-catalogs
-	 http://bustime.mta.info/wiki/Developers/GTFSRt
-	 https://github.com/FusionAuth/java-http
-	 https://github.com/google/transit
-	 https://github.com/google/transit/tree/master/gtfs-realtime/spec/en
-	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/service-alerts.md
-	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/trip-updates.md
-	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/vehicle-positions.md
-	 https://gtfs.org/resources/data/
-
-	 https://github.com/jungckjp/subway-times/blob/ad9937820c41547eb126ccd900e4f6c4155e3aff/subway_times.py
-
-	 https://github.com/Cornell-Tech-Urban-Tech-Hub/BusObservatory-Grabber
-	 https://github.com/timescale/examples/blob/master/mta/gtfs-ingest.py
-	 https://github.com/DonRomaniello/InfoBoard/blob/main/resources/MTA_API.txt
-	 https://github.com/PeterJWei/CitywideFootprinting/tree/master/newWebService
-	 https://github.com/ktc312/NewYork_gtfs_realtime
-
-	 https://www.transit.land/feeds/f-bigbluebus~rt
-	 https://www.transit.land/feeds/f-smartbus~rt
-	 https://www.transit.land/feeds/f-nycferry~rt
-	 https://www.transit.land/feeds/f-mta~nyc~rt~alerts
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~1~2~3~4~5~6~7
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~a~c~e
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~b~d~f~m
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~g
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~j~z
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~l
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~n~q~r~w
-	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~sir
-	 https://www.transit.land/feeds/f-mtamaryland~marc~train~rt
-	 https://www.transit.land/feeds/f-hazleton~public~transit~rt
-
-	 https://github.com/camsys/onebusaway-nyc
-
 	*/
-	// https://github.com/google/transit/tree/master/gtfs-realtime/spec/en
+	// 
 //	public static void main(String args[]) {
 //		//System.out.println("alerts");
 //		//getMTAAlerts();
