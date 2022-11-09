@@ -56,4 +56,59 @@ What's happening?
 Con Edison work', descriptionLanguage='EN', effect='null', stopId='null', tripStartDate='null', tripStartTime='null', routeId='null', directionId=0, url='null', severityLevel='null', cause='null']
 2022-11-09T10:46:01.186-05:00  INFO 33974 --- [ionShutdownHook] o.s.p.config.PulsarClientFactoryBean     : Closing client org.apache.pulsar.client.impl.PulsarClientImpl@15e3a063
 
+----- got message -----
+key:[09d013fd-5e36-4eff-b482-d4046312bdae], properties:[], content:{"feedEntityID":"MTABC_lmm:planned_work:5640","activePeriodStart":1659499200,"activePeriodEnd":1683504000,"headerText":"Northbound Q50 stop on Roosevelt Ave at Main St as been temporarily relocated to Main St at 39th Ave in front of GNC","headerLanguage":"EN","agency":"MTABC","tripRouteId":"Q50","tripDirectionId":0,"descriptionText":"Northbound Q50 stop on Roosevelt Ave at Main St as been temporarily relocated to Main St at 39th Ave in front of GNC\nWhat's happening?\nStaircase work at the Flushing-Main St Subway Station","descriptionLanguage":"EN","directionId":0}
+
+````
+
+**** Flink SQL
+
+````
+CREATE CATALOG pulsar WITH (
+   'type' = 'pulsar-catalog',
+   'catalog-service-url' = 'pulsar://localhost:6650',
+   'catalog-admin-url' = 'http://localhost:8080'
+);
+
+SHOW CURRENT DATABASE;
+SHOW DATABASES;
+
+USE CATALOG pulsar;
+
+set table.dynamic-table-options.enabled = true;
+
+show databases;
+
+use `public/default`;
+
+show tables;
+
+describe mtaalert;
++---------------------+--------+-------+-----+--------+-----------+
+|                name |   type |  null | key | extras | watermark |
++---------------------+--------+-------+-----+--------+-----------+
+|     activePeriodEnd | BIGINT | FALSE |     |        |           |
+|   activePeriodStart | BIGINT | FALSE |     |        |           |
+|              agency | STRING |  TRUE |     |        |           |
+|               cause | STRING |  TRUE |     |        |           |
+| descriptionLanguage | STRING |  TRUE |     |        |           |
+|     descriptionText | STRING |  TRUE |     |        |           |
+|         directionId | BIGINT | FALSE |     |        |           |
+|              effect | STRING |  TRUE |     |        |           |
+|        feedEntityID | STRING |  TRUE |     |        |           |
+|      headerLanguage | STRING |  TRUE |     |        |           |
+|          headerText | STRING |  TRUE |     |        |           |
+|             routeId | STRING |  TRUE |     |        |           |
+|       severityLevel | STRING |  TRUE |     |        |           |
+|              stopId | STRING |  TRUE |     |        |           |
+|     tripDirectionId | BIGINT | FALSE |     |        |           |
+|         tripRouteId | STRING |  TRUE |     |        |           |
+|       tripStartDate | STRING |  TRUE |     |        |           |
+|       tripStartTime | STRING |  TRUE |     |        |           |
+|                 url | STRING |  TRUE |     |        |           |
++---------------------+--------+-------+-----+--------+-----------+
+19 rows in set
+
+select agency, descriptionText, feedEntityID, headerText,  cause from mtaalert;
+
 ````
