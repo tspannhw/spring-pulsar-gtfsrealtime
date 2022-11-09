@@ -47,4 +47,13 @@ server.port: 8799
 ### App Run
 
 ````
+2022-11-09T10:45:57.133-05:00  INFO 33974 --- [r-client-io-1-1] ealTimeProducerConfig$LoggingInterceptor : GTFS Producer: gtfsrtspringboot, MessageId: 14621:94:0, Key: d737c0e3-d686-49ed-bf50-3a65aac2fdca, Pub Time: 1668008757131, Schema: , Value: Alert[feedEntityID='MTABC_lmm:planned_work:6893', activePeriodStart=1665115233, activePeriodEnd=1683504000, headerText='Northbound Q25 stops on 7th Ave at 127th St and 125th St and on College Point Blvd at 7th Ave and Lax Ave are closed', headerLanguage='EN', agency='MTABC', tripRouteId='Q25', tripDirectionId=0, descriptionText='Northbound Q25 stops on 7th Ave at 127th St and 125th St and on College Point Blvd at 7th Ave and Lax Ave are closed
+The last stop before detouring is 127th St at 9th Ave.
+
+Buses make requested stops along 5th Ave from 127th St to College Point Blvd.
+
+What's happening?
+Con Edison work', descriptionLanguage='EN', effect='null', stopId='null', tripStartDate='null', tripStartTime='null', routeId='null', directionId=0, url='null', severityLevel='null', cause='null']
+2022-11-09T10:46:01.186-05:00  INFO 33974 --- [ionShutdownHook] o.s.p.config.PulsarClientFactoryBean     : Closing client org.apache.pulsar.client.impl.PulsarClientImpl@15e3a063
+
 ````
