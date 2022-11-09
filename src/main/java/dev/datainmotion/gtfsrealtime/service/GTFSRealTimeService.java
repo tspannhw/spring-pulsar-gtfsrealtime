@@ -1,37 +1,21 @@
 package dev.datainmotion.gtfsrealtime.service;
 
+import com.google.protobuf.ExtensionRegistry;
+import com.google.transit.realtime.GtfsRealtime;
+import com.google.transit.realtime.GtfsRealtime.FeedEntity;
+import com.google.transit.realtime.GtfsRealtime.FeedMessage;
+import dev.datainmotion.gtfsrealtime.model.Alert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.time.Duration;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import com.google.protobuf.ExtensionRegistry;
-import dev.datainmotion.gtfsrealtime.model.Alert;
-import dev.datainmotion.gtfsrealtime.model.Observation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.net.URL;
-
-import com.google.transit.realtime.GtfsRealtime.FeedEntity;
-import com.google.transit.realtime.GtfsRealtime.FeedMessage;
-import com.google.transit.realtime.*;
-import com.google.transit.realtime.GtfsRealtime;
-import com.google.protobuf.ExtensionRegistry;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 /**
  * 
@@ -54,6 +38,8 @@ public class GTFSRealTimeService {
 
 	/**
 	 * get MTA Alerts
+	 *
+	 * https://developers.google.com/transit/gtfs-realtime/examples/java-sample
 	 */
 	public List<Alert> getMTAAlerts() {
 		ExtensionRegistry registry = ExtensionRegistry.newInstance();
@@ -201,48 +187,107 @@ public class GTFSRealTimeService {
 		return alerts;
 	}
 
-	public static void getMTAVehiclePositions() {
+	public List<Alert> getMTAVehiclePositions() {
+		ExtensionRegistry registry = ExtensionRegistry.newInstance();
 		URL url = null;
 		try {
-			url = new URL("http://gtfsrt.prod.obanyc.com/vehiclePositions?key=eb3b69d1-c869-4429-bee6-26a6cfc89cbe");
+			url = new URL(gtfsRealTimeProperties.getVehiclepositionsUrl() + gtfsRealTimeProperties.getKey());
+			// "http://gtfsrt.prod.obanyc.com/vehiclePositions?key=eb3b69d1-c869-4429-bee6-26a6cfc89cbe");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			log.error("Failed to retrieve vehicles gtfsrealtimedue to: " + e.getMessage(), e);
+			return Collections.emptyList();
 		}
+
+		List<Alert> alerts = new ArrayList<>();
 		FeedMessage feed = null;
 		try {
 			feed = FeedMessage.parseFrom(url.openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		System.out.println("Size:" + feed.getSerializedSize());
-
-		for (FeedEntity entity : feed.getEntityList()) {
-
-			System.out.println("Feed Entity ID:" + entity.getId() );
-
-			if ( entity.hasVehicle()) {
-				System.out.println("Vehicle:" + entity.getVehicle().getVehicle().toString());
-			}
-
-			if ( entity.hasAlert() ) {
-				System.out.println("Alert:" + entity.getAlert());
-
-//				entity.getAlert().getDescriptionText()
-			}
-
-			if (entity.hasTripUpdate()) {
-				System.out.println(entity.getTripUpdate());
-			}
+			log.error("Failed to retrieve gtfsrealtimedue to: " + e.getMessage(), e);
+			return Collections.emptyList();
 		}
 
+		/**
+		 Vehicle:MTABC_2248,,
+		 RID: BM4
+		 DID: 1
+		 STD20221028
+		 trid: 34572669-SCPD2-SC_D2-Weekday-04-SDon
+		 Feed Entity ID:MTABC_2230
+		 Vehicle:id: "MTABC_2230"
+		 *
+		 */
+		if ( feed != null && feed.getSerializedSize() > 0 ) {
+
+			for (FeedEntity entity : feed.getEntityList()) {
+				System.out.println("Feed Entity ID:" + entity.getId());
+				if (entity.hasVehicle() && entity.getVehicle() !=null) {
+					System.out.println("Vehicletostring:" + entity.getVehicle().getVehicle().toString());
+					GtfsRealtime.VehiclePosition vehicle = entity.getVehicle();
+					System.out.println("Vehicleid:" +
+							vehicle.getVehicle().getId() + ",label=" +
+							vehicle.getVehicle().getLabel() + ",plate=" +
+							vehicle.getVehicle().getLicensePlate() );
+					if ( vehicle.getTrip() != null ) {
+						GtfsRealtime.TripDescriptor trip = vehicle.getTrip();
+						if ( trip.hasStartTime()) {
+							System.out.println("VT st: " +trip.getStartTime());
+						}
+						if ( trip.hasRouteId() ) {
+							System.out.println("RID: " +trip.getRouteId());
+						}
+						if ( trip.hasDirectionId() ) {
+							System.out.println("DID: " +trip.getDirectionId());
+						}
+						if ( trip.hasStartDate()) {
+							System.out.println("STDt:" + trip.getStartDate());
+						}
+						if ( trip.hasTripId()) {
+							System.out.println("trid: " +trip.getTripId());
+						}
+					}
+				}
+
+				if (entity.hasAlert()) {
+					System.out.println("Alert:" + entity.getAlert());
+					//entity.getAlert().getEffect()
+					// alert iterate
+					GtfsRealtime.Alert alert = entity.getAlert();
+					System.out.println("alert: " + alert.getHeaderText().toString());
+				}
+
+				if (entity.hasTripUpdate()) {
+					System.out.println(entity.getTripUpdate());
+					GtfsRealtime.TripUpdate tripupdate = entity.getTripUpdate();
+					System.out.println("Trip update: " +
+					tripupdate.getDelay() + "," +
+					tripupdate.getVehicle() + "," +
+							tripupdate.getSerializedSize() + "," +
+							tripupdate.getTimestamp());
+				}
+			}
+		}
+
+		return alerts;
 	}
 
-	public static void getMTATripUpdates() {
+	/**
+	 * https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/trip-updates.md
+	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-stoptimeupdate
+	 https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#tripstxt
+	 https://github.com/OneBusAway/onebusaway/wiki
+	 https://developers.google.com/transit/gtfs-realtime/guides/trip-updates
+	 https://github.com/ktc312/NewYork_gtfs_realtime/
+	 */
+	public void getMTATripUpdates() {
 		URL url = null;
 		try {
-			url = new URL("http://gtfsrt.prod.obanyc.com/tripUpdates?key=b1f9a401-c839-417c-8995-d3a4a505b7ad");
+			// url = new URL("http://gtfsrt.prod.obanyc.com/tripUpdates?key=b1f9a401-c839-417c-8995-d3a4a505b7ad");
+
+			url = new URL ( gtfsRealTimeProperties.getTripupdatesUrl() +  gtfsRealTimeProperties.getKey() );
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -260,6 +305,64 @@ public class GTFSRealTimeService {
 
 			System.out.println("Feed Entity ID:" + entity.getId() );
 
+			if (entity.hasTripUpdate()) {
+				GtfsRealtime.TripUpdate tripUpdate = entity.getTripUpdate();
+
+				//System.out.println("Trip Update: " + tripUpdate.toString());
+
+				GtfsRealtime.TripDescriptor trip = tripUpdate.getTrip();
+
+				System.out.println("Trip:" +
+						trip.getTripId() + "," +
+						trip.getStartDate() + "," +
+						trip.getScheduleRelationship().getValueDescriptor().getFullName() + "," +
+						trip.getRouteId() + "," +
+						trip.getDirectionId() );
+
+				if ( trip.hasScheduleRelationship() )
+				{
+					GtfsRealtime.TripDescriptor.ScheduleRelationship sr = trip.getScheduleRelationship();
+
+					System.out.println("sr:" + sr.getNumber() + "," +
+					sr.getValueDescriptor().getFullName() + "," +
+							sr.getDescriptorForType().getFullName() );
+				}
+
+				if ( trip.hasStartDate()) {
+					//trip.getStartDate()
+				}
+
+				if ( tripUpdate.hasDelay()) {
+
+					System.out.println("Delay: " + tripUpdate.getDelay() );
+
+//					GtfsRealtime.TripUpdate.StopTimeUpdate  stopTimeUpdate = tripUpdate.getStopTimeUpdate(0);
+//
+//					System.out.println("Stop Time Update:" + stopTimeUpdate.toString());
+				}
+
+
+				if ( tripUpdate.hasTimestamp() ) {
+					System.out.println("has timestamp");
+				}
+
+//
+//				for update in en["trip_update"]["stop_time_update"]:
+//				if 'departure' in update:
+//				departure = update["departure"]["time"]
+//				stp_id = update["stop_id"]
+//								#if stp_id in result[line_id][vehicleId]:
+//								#	result[line_id][vehicleId][stp_id].append(epoch_to_realtime(departure))
+//								#else:
+//				result[line_id][vehicleId][stp_id] = epoch_to_realtime(departure)
+
+
+				System.out.println("Trip Update fields: " +
+						tripUpdate.getDelay() + "," +
+						tripUpdate.getVehicle() + "," +
+						tripUpdate.getSerializedSize() + "," +
+						tripUpdate.getTimestamp());
+			}
 			if ( entity.hasAlert() ) {
 				System.out.println("Alert:" + entity.getAlert());
 			}
@@ -284,6 +387,13 @@ public class GTFSRealTimeService {
 	 https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/vehicle-positions.md
 	 https://gtfs.org/resources/data/
 
+	 https://github.com/jungckjp/subway-times/blob/ad9937820c41547eb126ccd900e4f6c4155e3aff/subway_times.py
+
+	 https://github.com/Cornell-Tech-Urban-Tech-Hub/BusObservatory-Grabber
+	 https://github.com/timescale/examples/blob/master/mta/gtfs-ingest.py
+	 https://github.com/DonRomaniello/InfoBoard/blob/main/resources/MTA_API.txt
+	 https://github.com/PeterJWei/CitywideFootprinting/tree/master/newWebService
+	 https://github.com/ktc312/NewYork_gtfs_realtime
 
 	 https://www.transit.land/feeds/f-bigbluebus~rt
 	 https://www.transit.land/feeds/f-smartbus~rt
@@ -299,6 +409,8 @@ public class GTFSRealTimeService {
 	 https://www.transit.land/feeds/f-mta~nyc~rt~subway~sir
 	 https://www.transit.land/feeds/f-mtamaryland~marc~train~rt
 	 https://www.transit.land/feeds/f-hazleton~public~transit~rt
+
+	 https://github.com/camsys/onebusaway-nyc
 
 	*/
 	// https://github.com/google/transit/tree/master/gtfs-realtime/spec/en
