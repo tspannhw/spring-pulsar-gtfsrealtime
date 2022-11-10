@@ -116,11 +116,33 @@ select agency, descriptionText, feedEntityID, headerText,  cause from mtaalert;
 
 ````
 
+
+#### FLiPN-Stack References
+
+* https://github.com/tspannhw/gtfs
+
+
+
+#### Articles
+
+* https://dev.to/gavinr/how-to-open-a-gtfs-bus-feed-in-the-browser-kgo
+
+* 
+
+
+#### Code
+
+* https://codepen.io/gavinr/pen/oNXrYGw?editors=0010
+
+
+
 #### Resources
 
 * https://new.mta.info/developers
 
 * https://api.mta.info/#/HelpDocument
+
+* https://developers.google.com/protocol-buffers/
 
 * https://github.com/OneBusAway/onebusaway-gtfs-realtime-api/blob/master/src/main/proto/com/google/transit/realtime/gtfs-realtime-NYCT.proto
 
@@ -220,7 +242,6 @@ select agency, descriptionText, feedEntityID, headerText,  cause from mtaalert;
 
 * https://www.transit.land/feeds/f-mta~nyc~rt~subway~a~c~e
 
-
 * https://www.transit.land/feeds/f-mta~nyc~rt~subway~b~d~f~m
 
 * https://www.transit.land/feeds/f-mta~nyc~rt~subway~g
@@ -240,6 +261,8 @@ select agency, descriptionText, feedEntityID, headerText,  cause from mtaalert;
 * https://github.com/camsys/onebusaway-nyc
 
 * https://github.com/google/transit/tree/master/gtfs-realtime/spec/en
+
+* https://github.com/tspannhw/gtfs_realtime_json
 
 
 

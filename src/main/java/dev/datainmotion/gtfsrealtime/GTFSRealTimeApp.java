@@ -59,7 +59,7 @@ public class GTFSRealTimeApp {
                 alert.getAgency() != null &&
                 alert.getDescriptionText() != null)
             {
-                log.debug("{}{}=>{},{}",
+                log.debug("Alert FeedEntityID:{} Agency:{} => Descr:{}, Header: {}",
                         alert.getFeedEntityID(),
                         alert.getAgency(),
                         alert.getDescriptionText().substring(0, 25),
@@ -68,7 +68,7 @@ public class GTFSRealTimeApp {
             }
 			try {
 				UUID uuidKey = UUID.randomUUID();
-                System.out.println("alert object: " + alert.toString());
+                System.out.println("Alert object: " + alert.toString());
 				MessageId msgid = pulsarTemplate.newMessage(alert)
 						.withMessageCustomizer((mb) -> mb.key(uuidKey.toString()))
 						.send();

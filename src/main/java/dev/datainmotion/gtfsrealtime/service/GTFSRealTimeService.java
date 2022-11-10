@@ -208,13 +208,12 @@ public class GTFSRealTimeService {
 		}
 
 		if ( feed != null && feed.getSerializedSize() > 0 ) {
-
 			for (FeedEntity entity : feed.getEntityList()) {
 				System.out.println("Feed Entity ID:" + entity.getId());
 				if (entity.hasVehicle() && entity.getVehicle() !=null) {
-					System.out.println("Vehicletostring:" + entity.getVehicle().getVehicle().toString());
+					System.out.println("Vehicle tostring:" + entity.getVehicle().getVehicle().toString());
 					GtfsRealtime.VehiclePosition vehicle = entity.getVehicle();
-					System.out.println("Vehicleid:" +
+					System.out.println("Vehicle id:" +
 							vehicle.getVehicle().getId() + ",label=" +
 							vehicle.getVehicle().getLabel() + ",plate=" +
 							vehicle.getVehicle().getLicensePlate() );
@@ -282,14 +281,12 @@ public class GTFSRealTimeService {
 		System.out.println("Size:" + feed.getSerializedSize());
 
 		for (FeedEntity entity : feed.getEntityList()) {
-
 			System.out.println("Feed Entity ID:" + entity.getId() );
 
 			if (entity.hasTripUpdate()) {
 				GtfsRealtime.TripUpdate tripUpdate = entity.getTripUpdate();
 
 				//System.out.println("Trip Update: " + tripUpdate.toString());
-
 				GtfsRealtime.TripDescriptor trip = tripUpdate.getTrip();
 
 				System.out.println("Trip:" +
@@ -335,8 +332,7 @@ public class GTFSRealTimeService {
 //								#	result[line_id][vehicleId][stp_id].append(epoch_to_realtime(departure))
 //								#else:
 //				result[line_id][vehicleId][stp_id] = epoch_to_realtime(departure)
-
-
+				
 				System.out.println("Trip Update fields: " +
 						tripUpdate.getDelay() + "," +
 						tripUpdate.getVehicle() + "," +
@@ -351,7 +347,7 @@ public class GTFSRealTimeService {
 
 	/**
 	*/
-	// 
+	//
 //	public static void main(String args[]) {
 //		//System.out.println("alerts");
 //		//getMTAAlerts();
