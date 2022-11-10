@@ -42,7 +42,6 @@ public class GTFSRealTimeApp {
 	@Scheduled(initialDelay = 10, fixedRate = 10000)
     public void getRows() {
 		//List<Alert> list = gtfsRealTimeService.getMTAVehiclePositions();
-
        // gtfsRealTimeService.getMTATripUpdates();
 
         List<Alert> alerts = gtfsRealTimeService.getMTAAlerts();

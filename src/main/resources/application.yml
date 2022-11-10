@@ -27,6 +27,6 @@ logging:
     org.apache.pulsar: error
     root: info
     ROOT: info
-    dev.datainmotion.gtfsrealtime: info
+    dev.datainmotion.gtfsrealtime: debug
 
 server.port: 8799

@@ -332,7 +332,7 @@ public class GTFSRealTimeService {
 //								#	result[line_id][vehicleId][stp_id].append(epoch_to_realtime(departure))
 //								#else:
 //				result[line_id][vehicleId][stp_id] = epoch_to_realtime(departure)
-				
+
 				System.out.println("Trip Update fields: " +
 						tripUpdate.getDelay() + "," +
 						tripUpdate.getVehicle() + "," +
