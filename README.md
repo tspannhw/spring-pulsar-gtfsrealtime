@@ -6,6 +6,11 @@ Timothy Spann
 Using the FLiPN Stack to ingest, route, enrich, transform, analyze, act on and display real-time transit information from various transit sources including MTA utilizings GTFS Real-Time feeds.
 
 
+![Tim](https://raw.githubusercontent.com/tspannhw/spring-pulsar-gtfsrealtime/main/images/diagram.png)
+
+
+
+
 ### Using New Spring Module for Apache Pulsar
 
 This uses https://github.com/spring-projects-experimental/spring-pulsar
