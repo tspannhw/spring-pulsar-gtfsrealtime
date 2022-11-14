@@ -10,7 +10,6 @@ Using the FLiPN Stack to ingest, route, enrich, transform, analyze, act on and d
 
 
 
-
 ### Using New Spring Module for Apache Pulsar
 
 This uses https://github.com/spring-projects-experimental/spring-pulsar
@@ -69,6 +68,10 @@ key:[09d013fd-5e36-4eff-b482-d4046312bdae], properties:[], content:{"feedEntityI
 
 ````
 
+
+![](https://github.com/tspannhw/spring-pulsar-gtfsrealtime/raw/main/images/gtfs1.jpg)
+
+
 ### Flink SQL
 
 ````
@@ -122,17 +125,26 @@ select agency, descriptionText, feedEntityID, headerText,  cause from mtaalert;
 ````
 
 
+
+![](https://github.com/tspannhw/spring-pulsar-gtfsrealtime/raw/main/images/gtfsFlinkSQL.jpg)
+
+![](https://github.com/tspannhw/spring-pulsar-gtfsrealtime/raw/main/images/rowSummaryFlinkSQL.jpg)
+
+![](https://github.com/tspannhw/spring-pulsar-gtfsrealtime/raw/main/images/gtfsAlertSQL.jpg)
+
+
+
+
 #### FLiPN-Stack References
 
-* https://github.com/tspannhw/gtfs
+* [https://github.com/tspannhw/gtfs](https://github.com/tspannhw/gtfs)
 
 
 
 #### Articles
 
-* https://dev.to/gavinr/how-to-open-a-gtfs-bus-feed-in-the-browser-kgo
+* [https://dev.to/gavinr/how-to-open-a-gtfs-bus-feed-in-the-browser-kgo](https://dev.to/gavinr/how-to-open-a-gtfs-bus-feed-in-the-browser-kgo)
 
-* 
 
 
 #### Code
